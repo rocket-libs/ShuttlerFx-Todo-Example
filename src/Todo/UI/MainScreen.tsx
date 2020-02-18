@@ -4,14 +4,14 @@ import TodoRespository from '../Shuttler/TodoRespository';
 import TodoState from '../Shuttler/TodoState';
 import TodoItem from '../Data/TodoItem';
 import TodoModel from '../Shuttler/TodoModel';
-import TodoStateHelper from '../Services/TodoStateHelper';
+import initializeHelper from '../Services/TodoStateHelper';
 
 let shuttlerFx: ShuttlerFx<TodoRespository,TodoState,TodoItem> = new ShuttlerFx<TodoRespository,TodoState,TodoItem>(new TodoModel());
 export default function MainTodoScreen(){
     const [shuttlerChangeId, setShuttlerChangeId] = useState("");
-    new TodoStateHelper(shuttlerFx);
     useEffect(() => {
         const initializeShuttlerFx = () : () => void => {
+            initializeHelper(shuttlerFx);
             const shuttlerCleanUp = shuttlerFx.subscribe((model: TodoModel) => setShuttlerChangeId(model.state.changeId));
             return function cleanup() {
                 shuttlerCleanUp();
